@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  market-data-ingestor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: market-data-ingestor:latest
+    ports:
+      - "8080:8080"
