@@ -1,10 +1,42 @@
 version: "3.9"
 
 services:
+
   market-data-ingestor:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: market-data-ingestor:latest
+    build: .
+    container_name: market-data-ingestor
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:8080"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: market-data-postgres
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  pg_data:
