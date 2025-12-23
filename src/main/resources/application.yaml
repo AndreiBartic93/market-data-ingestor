@@ -16,9 +16,9 @@ api:
   binance:
     base-url: https://api.binance.com
   ingestion:
-    symbol: ETHUSDC
-    interval: 1h
-    limit: 150
+    symbols: ["ETHUSDT", "BNBUSDT"]
+    interval: "1h"
+    limit: 1000
     pool-seconds: 60
   kafka:
-    topic: market.candles
+    candles-topic: market.candles

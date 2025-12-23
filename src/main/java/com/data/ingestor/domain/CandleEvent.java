@@ -13,5 +13,5 @@ public record CandleEvent(
         BigDecimal low,
         BigDecimal close,
         BigDecimal volume,
-        long eventTime            // millis (cand publicam)
+        long eventTime
 ) {}
