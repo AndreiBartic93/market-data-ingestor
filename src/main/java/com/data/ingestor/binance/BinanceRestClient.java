@@ -26,7 +26,7 @@ public class BinanceRestClient {
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/v3/klines")
                         .queryParam("symbol", symbol)
-                        .queryParam(interval, interval)
+                        .queryParam("interval", interval)
                         .queryParam("limit", limit)
                         .build()
                 )
@@ -34,6 +34,7 @@ public class BinanceRestClient {
                 .bodyToMono(new ParameterizedTypeReference<List<List<Object>>>() {})
                 .map(BinanceRestClient::toKlines);
     }
+
     private static List<BinanceKline> toKlines(List<List<Object>> raw) {
         List<BinanceKline> out = new ArrayList<>(raw.size());
 
