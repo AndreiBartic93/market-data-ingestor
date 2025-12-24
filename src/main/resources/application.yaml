@@ -19,6 +19,6 @@ app:
     symbols: ["ETHUSDT", "BNBUSDT"]
     interval: "1h"
     limit: 1000
-    pool-seconds: 60
+    pool-seconds: 600
   kafka:
     candles-topic: market.candles
