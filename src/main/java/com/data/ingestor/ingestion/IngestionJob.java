@@ -34,11 +34,11 @@ public class IngestionJob {
         var topic = props.kafka().candlesTopic();
 
         for (String symbol : ingestion.symbols()) {
-            binanceRestClient.fetchKlines(symbol, ingestion.interval(), ingestion.limit())
-                    .doOnSubscribe(s -> log.info("Pooling klines: simbol={}, interval={}, limit={}",
-                            symbol, ingestion.interval(), ingestion.limit()))
+            binanceRestClient.fetchKlines(symbol, ingestion.intervals(), ingestion.limit())
+                    .doOnSubscribe(s -> log.info("Pooling klines: simbol={}, intervals={}, limit={}",
+                            symbol, ingestion.intervals(), ingestion.limit()))
                     .flatMapMany(list -> reactor.core.publisher.Flux.fromIterable(list))
-                    .map(k -> candleEventAdapter.fromBinance(symbol, ingestion.interval(), k))
+                    .map(k -> candleEventAdapter.fromBinance(symbol, ingestion.intervals(), k))
                     .doOnNext(ev -> candleEventPublisher.publish(topic, ev))
                     .doOnError(e -> log.error("Polling failed for {}, symbol, e"))
                     .subscribe();

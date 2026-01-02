@@ -18,16 +18,24 @@ public record AppProperties (
 ) {
     public record Binance(
             @NotBlank String baseUrl
-    ) {}
+    ) {
+        public Binance() { this("https://api.binance.com"); }
+    }
 
     public record Ingestion(
             @NotEmpty List<@NotBlank String> symbols,
-            @NotBlank String interval,
+            @NotBlank  List<String> intervals,
             @Min(1) int limit,
             @Min(1) int poolSeconds
-    ){}
+    ){
+        public Ingestion() {
+            this(List.of("ETHUSDT"), List.of("1h"), 100, 60);
+        }
+    }
 
     public record Kafka(
             @NotBlank String candlesTopic
-    ) {}
+    ) {
+        public Kafka() { this("market.candles.%s"); }
+    }
 }

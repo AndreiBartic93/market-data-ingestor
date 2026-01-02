@@ -26,7 +26,7 @@ public class BinanceRestClient {
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/v3/klines")
                         .queryParam("symbol", symbol)
-                        .queryParam("interval", interval)
+                        .queryParam("intervals", interval)
                         .queryParam("limit", limit)
                         .build()
                 )
