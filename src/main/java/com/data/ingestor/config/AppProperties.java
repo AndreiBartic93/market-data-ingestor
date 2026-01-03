@@ -24,7 +24,7 @@ public record AppProperties (
 
     public record Ingestion(
             @NotEmpty List<@NotBlank String> symbols,
-            @NotBlank  List<String> intervals,
+            @NotBlank List<String> intervals,
             @Min(1) int limit,
             @Min(1) int poolSeconds
     ){

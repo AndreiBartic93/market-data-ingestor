@@ -4,6 +4,8 @@ import com.data.ingestor.domain.BinanceKline;
 import com.data.ingestor.domain.CandleEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CandleEventAdapter {
     public CandleEvent fromBinance(String symbol, String interval, BinanceKline kline) {
