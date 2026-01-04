@@ -19,6 +19,6 @@ app:
     symbols: [ "ETHUSDT" ]
     intervals: [ "1h", "4h" ]
     limit: 200
-    poll-seconds: 60
+    poll-seconds: 1
   kafka:
     candles-topic: market.candles
