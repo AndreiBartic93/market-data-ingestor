@@ -3,6 +3,7 @@ package com.data.ingestor.kafka;
 import com.data.ingestor.domain.CandleEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 public class CandleEventPublisher {
@@ -13,7 +14,8 @@ public class CandleEventPublisher {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publish(String topic, CandleEvent event) {
-        kafkaTemplate.send(topic, event.symbol(), event);
+    public Mono<Void> publish(String topic, CandleEvent event) {
+        return Mono.fromFuture(kafkaTemplate.send(topic, event).toCompletableFuture())
+                .then();
     }
 }
