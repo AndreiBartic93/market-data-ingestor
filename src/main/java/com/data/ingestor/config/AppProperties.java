@@ -19,7 +19,7 @@ public record AppProperties (
         @Valid @NotNull Ws ws
 ) {
     public record Binance(
-            @NotBlank String baseUrl,
+            @NotBlank String restBaseUrl,
             @NotBlank String wsBaseUrl
     ) {
     }
