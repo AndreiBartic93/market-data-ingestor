@@ -15,10 +15,12 @@ import java.util.List;
 public record AppProperties (
         @Valid @NotNull Binance binance,
         @Valid @NotNull Ingestion ingestion,
-        @Valid @NotNull Kafka kafka
+        @Valid @NotNull Kafka kafka,
+        @Valid @NotNull Ws ws
 ) {
     public record Binance(
-            @NotBlank String baseUrl
+            @NotBlank String baseUrl,
+            @NotBlank String wsBaseUrl
     ) {
     }
 
@@ -26,12 +28,19 @@ public record AppProperties (
             @NotEmpty List<@NotBlank String> symbols,
             @NotEmpty List<@NotBlank String> intervals,
             @Min(1) int limit,
-            @Min(1) int pollSeconds
+            @Min(1) int pollSeconds,
+            @Min(0) int bootstrapLimit
     ){
     }
 
     public record Kafka(
-            @NotBlank String candlesTopic
+            @NotBlank String candlesTopicPrefix,
+            @NotBlank boolean separateLiveTopic
     ) {
     }
+
+    public record Ws(
+            @Min(1) int reconnectBackoffSeconds,
+            @Min(1) int maxReconnectBackoffSeconds
+    ) {}
 }
