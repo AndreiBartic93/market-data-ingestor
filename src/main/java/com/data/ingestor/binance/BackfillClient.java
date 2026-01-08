@@ -9,5 +9,6 @@ public interface BackfillClient {
     Mono<List<BinanceKline>> fetchKlines(String symbol,
                                          String interval,
                                          long startTimeMs,
-                                         long endTimeMs);
+                                         long endTimeMs,
+                                         int limit);
 }
