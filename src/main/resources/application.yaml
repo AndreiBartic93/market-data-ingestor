@@ -14,11 +14,21 @@ server:
 
 app:
   binance:
-    base-url: https://api.binance.com
+    rest-base-url: https://api.binance.com
+    ws-base-url: wss://stream.binance.com:9443
   ingestion:
-    symbols: [ "ETHUSDT" ]
-    intervals: [ "1h", "4h" ]
+    symbols: ["ETHUSDT"]
+    intervals: ["1h", "4h"]
     limit: 200
     poll-seconds: 1
+    bootstrap-limit: 50
   kafka:
-    candles-topic: market.candles
+    candles-topic-prefix: market.candles
+    separate-live-topic: true
+  ws:
+    reconnect-backoff-seconds: 2
+    max-reconnect-backoff-seconds: 30
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
