@@ -12,32 +12,27 @@ import java.util.List;
 
 @Validated
 @ConfigurationProperties(prefix = "app")
-public record AppProperties (
-        @Valid @NotNull Binance binance,
-        @Valid @NotNull Ingestion ingestion,
-        @Valid @NotNull Kafka kafka,
-        @Valid @NotNull Ws ws
+public record AppProperties(
+        @Valid Binance binance,
+        @Valid Ingestion ingestion,
+        @Valid Kafka kafka,
+        @Valid Ws ws
 ) {
     public record Binance(
             @NotBlank String restBaseUrl,
             @NotBlank String wsBaseUrl
-    ) {
-    }
+    ) {}
 
     public record Ingestion(
             @NotEmpty List<@NotBlank String> symbols,
             @NotEmpty List<@NotBlank String> intervals,
-            @Min(1) int limit,
-            @Min(1) int pollSeconds,
-            @Min(0) int bootstrapLimit
-    ){
-    }
+            @Min(1) int bootstrapLimit
+    ) {}
 
     public record Kafka(
             @NotBlank String candlesTopicPrefix,
-            @NotBlank boolean separateLiveTopic
-    ) {
-    }
+            boolean separateLiveTopic
+    ) {}
 
     public record Ws(
             @Min(1) int reconnectBackoffSeconds,
