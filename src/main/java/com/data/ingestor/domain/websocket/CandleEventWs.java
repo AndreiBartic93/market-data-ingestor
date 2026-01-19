@@ -11,7 +11,7 @@ public record CandleEventWs(
         String close,
         String volume,
         boolean closed,
-        String eventType // "LIVE" | "CLOSE" | "BACKFILL"
-)
+        String eventType // LIVE | CLOSE | BACKFILL
+) {}
 
 

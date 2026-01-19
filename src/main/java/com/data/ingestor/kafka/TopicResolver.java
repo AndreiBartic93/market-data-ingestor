@@ -9,8 +9,19 @@ import org.springframework.stereotype.Component;
 public class TopicResolver {
     private final AppProperties appProperties;
 
-    public String topicForInterval(String interval) {
-        String base = appProperties.kafka().candlesTopic();
-        return base + "." + interval.toLowerCase();
+    public String topicFor(String interval, boolean live) {
+        String prefix = appProperties.kafka().candlesTopicPrefix();
+        if (appProperties.kafka().separateLiveTopic() && live) {
+            return prefix + ".live." + interval;
+        }
+        return prefix + "." + interval;
+    }
+
+    public String keyForClosed(String symbol, String interval, long openTime) {
+        return symbol + "|" + interval + "|" + openTime;
+    }
+
+    public String keyForLive(String symbol, String interval) {
+        return symbol + "|" + interval;
     }
 }

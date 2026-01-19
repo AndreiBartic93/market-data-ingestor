@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record BinanceWsKlineEvent (String eventType, String symbol, Kline kline) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record Kline(
-            long openTime, //candle start
-            long closeTime, //candle stop
-            String interval,
+            long openTime, //t
+            long closeTime, //T
+            String interval, //i
             String open,
             String close,
             String high,
-            String low, // OHLC
-            String volume, // volume
-            boolean isClosed // isClosed: true when candle is final
+            String low,
+            String volume, //v
+            boolean isClosed // x
     ) {}
 }
