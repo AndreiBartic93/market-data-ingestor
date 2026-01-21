@@ -1,6 +1,6 @@
 package com.data.ingestor.binance;
 
-import com.data.ingestor.domain.BinanceKline;
+import com.data.ingestor.domain.websocket.BinanceKline;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

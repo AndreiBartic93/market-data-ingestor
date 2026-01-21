@@ -2,6 +2,7 @@ package com.data.ingestor.binance;
 
 import com.data.ingestor.config.AppProperties;
 
+
 import com.data.ingestor.domain.websocket.BinanceKline;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.data.ingestor.util.NumberUtils.toBigDecimal;
@@ -27,7 +29,28 @@ public class BinanceBackfillClient implements BackfillClient {
 
     @Override
     public Mono<List<BinanceKline>> fetchKlinesRange(String symbol, String interval, long startTimeMs, long endTimeMs) {
-        return null;
+        if (endTimeMs <= startTimeMs) return Mono.just(List.of());
+
+        return fetchPage(symbol, interval, startTimeMs, endTimeMs)
+                .expand(page -> {
+                    if (page.isEmpty()) return Mono.empty();
+                    long lastOpen = page.get(page.size() - 1).openTime();
+                    long nextStart = lastOpen + 1; // evită duplicate
+                    if (nextStart >= endTimeMs) return Mono.empty();
+                    return fetchPage(symbol, interval, nextStart, endTimeMs);
+                })
+                .reduce(new ArrayList<BinanceKline>(), (acc, page) -> { acc.addAll(page); return acc; })
+                .map(list -> {
+                    list.sort(Comparator.comparingLong(BinanceKline::openTime));
+                    // dedup by openTime
+                    List<BinanceKline> out = new ArrayList<>(list.size());
+                    Long prev = null;
+                    for (var k : list) {
+                        if (prev == null || k.openTime() != prev) out.add(k);
+                        prev = k.openTime();
+                    }
+                    return out;
+                });
     }
 
     private Mono<List<BinanceKline>> fetchPage(String symbol, String interval, long startTimeMs, long endTimeMs) {
